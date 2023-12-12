@@ -23,14 +23,14 @@ const ShakeToRandomCountry = () => {
             intervalRef.current = setInterval(() => {
                 const randomIndex = Math.floor(Math.random() * countries.length);
                 setSelectedCountry(countries[randomIndex]);
-            }, 100); // Change country every 100 milliseconds
+            }, 100);
 
             setTimeout(() => {
                 if (intervalRef.current) {
                     clearInterval(intervalRef.current);
                 }
                 setIsRunning(false);
-            }, 10000); // Stop after 10 seconds
+            }, 10000); 
         }
     };
 
