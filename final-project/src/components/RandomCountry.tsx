@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { IonContent, IonCard, IonCardHeader, IonCardTitle, IonCardContent, IonImg, IonButton } from '@ionic/react';
+import { IonContent, IonCard, IonCardHeader, IonCardTitle, IonCardContent, IonButton } from '@ionic/react';
 import countriesData from './countries.json';
 import './RandomCountry.css';
 
@@ -11,64 +11,66 @@ interface Country {
 
 const countries: Country[] = countriesData as Country[];
 
-const ShakeToRandomCountry = () => {
-    const [selectedCountry, setSelectedCountry] = useState<Country | null>(null);
-    const [isRunning, setIsRunning] = useState(false);
-    const [userHasInteracted, setUserHasInteracted] = useState(false);
-    const intervalRef = useRef<NodeJS.Timeout | null>(null);
+const ShakeToRandomCountry: React.FC = () => {
+    const [randomCountry, setCountry] = useState<Country | null>(null);
+    const [running, setRun] = useState(false);
+    const waittime = useRef<NodeJS.Timeout | null>(null);
 
     const startRandomSelection = () => {
-        if (!isRunning) {
-            setIsRunning(true);
-            intervalRef.current = setInterval(() => {
+        if (!running) {
+            setRun(true);
+            waittime.current = setInterval(() => {
                 const randomIndex = Math.floor(Math.random() * countries.length);
-                setSelectedCountry(countries[randomIndex]);
+                setCountry(countries[randomIndex]);
             }, 100);
 
             setTimeout(() => {
-                if (intervalRef.current) {
-                    clearInterval(intervalRef.current);
+                if (waittime.current) {
+                    clearInterval(waittime.current);
                 }
-                setIsRunning(false);
+                setRun(false);
             }, 10000); 
         }
     };
 
-    useEffect(() => {
-        const handleShake = () => {
-            console.log('Shake event detected');
-            if (userHasInteracted) {
-                console.log('Starting random selection');
-                startRandomSelection();
-            }
-        };
+    const handleShake = (event: DeviceMotionEvent) => {
+        const shakeThreshold = 20;
+        const { accelerationIncludingGravity } = event;
 
+        let shake = Math.abs(accelerationIncludingGravity!.x!) > shakeThreshold || 
+                    Math.abs(accelerationIncludingGravity!.y!) > shakeThreshold || 
+                    Math.abs(accelerationIncludingGravity!.z!) > shakeThreshold;
+
+        if (shake && !running) {
+            startRandomSelection();
+        }
+    };
+
+    useEffect(() => {
         window.addEventListener('devicemotion', handleShake);
 
         return () => {
             window.removeEventListener('devicemotion', handleShake);
-            if (intervalRef.current) {
-                clearInterval(intervalRef.current);
-            }
         };
-    }, [userHasInteracted]);
+    }, [running]);
 
     return (
         <IonContent>
-        <div className = "center">
-            <IonButton onClick={startRandomSelection} disabled={isRunning}>
-                <p>Start</p>
-            </IonButton>
-        </div>
+            <div className = "center">
+                <IonButton onClick={startRandomSelection} disabled={running}>
+                    <p>Start</p>
+                </IonButton>
+            </div>
+            <br></br>
 
-            {selectedCountry && (
+            {randomCountry && (
                 <IonCard>
                     <IonCardHeader>
-                        <IonCardTitle><h1>{selectedCountry.country}</h1></IonCardTitle>
+                        <IonCardTitle><h1>{randomCountry.country}</h1></IonCardTitle>
                     </IonCardHeader>
                     <IonCardContent>
-                        <img src={selectedCountry.flag} style={{ width: '200px', height: '100px' }} />
-                        <p>Country Code: {selectedCountry.code}</p>
+                        <img src={randomCountry.flag} style={{ width: '200px', height: '100px' }} />
+                        <p>Country Code: {randomCountry.code}</p>
                     </IonCardContent>
                 </IonCard>
             )}

@@ -6,10 +6,11 @@ const Home: React.FC = () => {
   return (
     <IonPage>
       <IonHeader>
-        <div className="center">
-        <IonToolbar>
-          <IonTitle><h1 >Random Country</h1></IonTitle>
-        </IonToolbar>
+      <div className="center">
+          <IonToolbar>
+         
+            <IonTitle className="responsive-title">Random Country</IonTitle>
+          </IonToolbar>
         </div>
       </IonHeader>
       <IonContent fullscreen>
@@ -18,10 +19,13 @@ const Home: React.FC = () => {
             <IonTitle size="large">Blank</IonTitle>
           </IonToolbar>
         </IonHeader>
+
         <div className="center">
         <IonButton href="https://www.paypal.com/paypalme/triple666ix">DONATE TO SUPPORT</IonButton>
         </div>
-          <ShakeToRandomCountry/>
+
+        <ShakeToRandomCountry/>
+          
           
         
       

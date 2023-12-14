@@ -1,21 +1,23 @@
 ion-card{
     position: center;
-    height: 75%;
+    height: 50%;
     text-align: center;
     border: 5px solid;
-    border-color: red;
+    border-color: blue;
     margin-bottom: 0px;
     margin-left: 20%;
     margin-right: 20%;
     --padding-bottom: 0px;
+    /*background: linear-gradient(to bottom, darkred, darkblue);*/
   }
 
   
   .center {
     border:5px solid;
-    border-color: red;
+    border-color: blue;
     margin:20%;
     margin-top: 10px;
     margin-bottom: 10px;
     text-align: center;
   }
+

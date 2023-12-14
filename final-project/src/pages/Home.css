@@ -4,11 +4,11 @@ h1 {
 
   .center {
     border:5px solid;
-    border-color: red;
+    border-color: blue;
     margin:20%;
     margin-top: 10px;
     margin-bottom: 10px;
     text-align: center;
+    /*background: linear-gradient(to bottom, white, black);*/
+    
   }
-
-  
